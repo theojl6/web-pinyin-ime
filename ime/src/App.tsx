@@ -1,11 +1,11 @@
-import 'antd/dist/antd.css';
-import './App.css';
-import IME from './pinyin/IME';
+import "antd/dist/antd.css";
+import "./App.css";
+import TypeTrainer from "./TypeTrainer";
 
 function App() {
   return (
-    <div className='App'>
-      <IME />
+    <div className="App">
+      <TypeTrainer />
     </div>
   );
 }
