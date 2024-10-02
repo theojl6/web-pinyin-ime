@@ -13,7 +13,7 @@ type Char = {
 };
 
 type Candidate = {
-  char: string;
+  value: string;
   index: number;
 };
 
@@ -28,7 +28,6 @@ function TypeTrainer() {
   const [cursor, setCursor] = React.useState(0);
   const [currentInput, setCurrentInput] = React.useState<string[]>([]);
   const [chars, setChars] = React.useState<Char[]>(sampleChars);
-  const [focused, setFocused] = React.useState(false);
 
   const currentChar = chars[cursor];
 
@@ -53,7 +52,7 @@ function TypeTrainer() {
       setCandidates(
         getIMECandidates(input.join(""))
           .slice(0, MAX_CANDIDATES)
-          .map((char, index) => ({ char, index }))
+          .map((value, index) => ({ value, index }))
       );
     } else {
       setCandidates([]);
@@ -67,9 +66,6 @@ function TypeTrainer() {
       <h1>Type Trainer</h1>
       <div
         ref={ref}
-        className={`${
-          focused ? "bg-slate-900" : "bg-slate-700"
-        } h-fit text-wrap`}
         onKeyDown={(e) => {
           if (e.key === currentChar.char) {
             setCursor((c) => c + 1);
@@ -95,8 +91,14 @@ function TypeTrainer() {
             const numericKey = +e.key;
             const candidateOption = candidates[numericKey];
             if (candidateOption) {
-              if (candidateOption.char === currentChar.char) {
-                setCursor((c) => c + 1);
+              if (
+                chars
+                  .slice(cursor)
+                  .map(({ char }) => char)
+                  .join("")
+                  .startsWith(candidateOption.value)
+              ) {
+                setCursor((c) => c + candidateOption.value.length);
                 const input: string[] = [];
                 updateCandidates(input);
                 setCurrentInput(input as string[]);
@@ -105,12 +107,6 @@ function TypeTrainer() {
           }
         }}
         tabIndex={0}
-        onFocus={() => {
-          setFocused(true);
-        }}
-        onBlur={() => {
-          setFocused(false);
-        }}
       >
         {chars.map((c, i) => (
           <span className="text-6xl" key={`${c.char}-${c.index}`}>
@@ -130,7 +126,7 @@ function TypeTrainer() {
       <p>{currentInput.join(" ")}</p>
       <p>
         {candidates.map((c) => (
-          <span key={`${c.index}-${c.char}`}>{`${c.index}-${c.char} `}</span>
+          <span key={`${c.index}-${c.value}`}>{`${c.index}-${c.value} `}</span>
         ))}
       </p>
     </div>
