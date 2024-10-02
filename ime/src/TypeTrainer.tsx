@@ -63,7 +63,7 @@ function TypeTrainer() {
 
   return (
     <div className="max-w-full m-0-auto p-8 text-center">
-      <h1>Type Trainer</h1>
+      <h1>pinyin trainer</h1>
       <div
         ref={ref}
         onKeyDown={(e) => {
@@ -135,8 +135,8 @@ function TypeTrainer() {
 
 const Caret = () => {
   return (
-    <span className="absolute text-slate-600">
-      <span className="relative right-2">|</span>
+    <span>
+      <span>|</span>
     </span>
   );
 };
